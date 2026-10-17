@@ -8,18 +8,24 @@ window.MILFOR_CONFIG = {
   fecha: "Sábado 14 de noviembre de 2026 · 7:00 p.m.",
   lugar: "Salón principal",
   // Deje vacío para usar invitados.csv. O pegue la URL CSV publicada de Google Sheets
-  // (Archivo > Compartir > Publicar en la web > CSV), columnas: nombre,mesa
+  // (Archivo > Compartir > Publicar en la web > CSV), columnas: nombre,mesa,puesto (puesto es opcional)
   csvUrl: "",
-  // Mesas: número, nombre opcional y posición (x,y) en el plano de 400x500
+  // Mesas: número, nombre opcional, posición (x,y) en el plano de 400x500,
+  // asientos (sillas de la mesa) y forma: "redonda" (por defecto) o "rectangular".
+  // Numeración de puestos: el puesto 1 es el que queda del lado de la TARIMA
+  // (arriba en el plano) y se sigue en el sentido de las agujas del reloj.
+  asientosPorDefecto: 10,
+  frente: "TARIMA",     // hacia dónde mira el puesto 1 (se muestra en el dibujo de la mesa)
+  atras: "ENTRADA",     // lo que queda al lado opuesto (opcional, "" para ocultar)
   mesas: [
-    {mesa:1, nombre:"Mesa Rosa",     x:80,  y:200},
-    {mesa:2, nombre:"Mesa Orquídea", x:80,  y:290},
-    {mesa:3, nombre:"Mesa Lirio",    x:80,  y:380},
-    {mesa:4, nombre:"Mesa Jazmín",   x:320, y:200},
-    {mesa:5, nombre:"Mesa Gardenia", x:320, y:290},
-    {mesa:6, nombre:"Mesa Tulipán",  x:320, y:380},
-    {mesa:7, nombre:"Mesa Girasol",  x:160, y:430},
-    {mesa:8, nombre:"Mesa Magnolia", x:240, y:430}
+    {mesa:1, nombre:"Mesa Rosa",     x:80,  y:200, asientos:8},
+    {mesa:2, nombre:"Mesa Orquídea", x:80,  y:290, asientos:8},
+    {mesa:3, nombre:"Mesa Lirio",    x:80,  y:380, asientos:8},
+    {mesa:4, nombre:"Mesa Jazmín",   x:320, y:200, asientos:8},
+    {mesa:5, nombre:"Mesa Gardenia", x:320, y:290, asientos:8},
+    {mesa:6, nombre:"Mesa Tulipán",  x:320, y:380, asientos:8},
+    {mesa:7, nombre:"Mesa Girasol",  x:160, y:430, asientos:8},
+    {mesa:8, nombre:"Mesa Magnolia", x:240, y:430, asientos:8, forma:"rectangular"}
   ],
   // Elementos fijos del salón: x,y,ancho,alto
   elementos: [
