@@ -15,11 +15,20 @@ function buscar(lista,q){const n=norm(q);if(n.length<2)return[];const w=n.split(
 const mesaInfo=m=>{const t=C.mesas.find(x=>x.mesa==m)||{mesa:m};return Object.assign({asientos:C.asientosPorDefecto||10,forma:"redonda"},t)};
 // Posiciones de sillas en el dibujo de cerca. Arriba = lado de la tarima.
 // Puesto 1 = el del lado de la tarima; luego sentido de las agujas del reloj.
+// Mesa cuadrada: sillas por lado [arriba(tarima), derecha, abajo, izquierda]. Lo que sobra va a arriba, abajo, derecha.
+function lados(N){const b=Math.floor(N/4),r=N%4;return [b+(r>0),b+(r>2),b+(r>1),b]}
 function sillas(t){const N=Math.max(1,t.asientos|0);
  if(t.forma=="rectangular"){const k=Math.ceil(N/2),b=N-k,sp=42,w=Math.max(k,1)*sp,h=58,W=Math.max(300,w+70),cx=W/2,cy=40+30+h/2+6;
   const s=[];for(let i=0;i<k;i++)s.push({n:i+1,x:cx-w/2+sp/2+i*sp,y:cy-h/2-22});
   const wb=b*sp;for(let i=0;i<b;i++)s.push({n:k+i+1,x:cx+wb/2-sp/2-i*sp,y:cy+h/2+22});
   return {W,H:cy+h/2+22+16+34,cx,cy,mesa:{w,h},s,r:15}}
+ if(t.forma=="cuadrada"){const L=lados(N),m=Math.max(...L,1),sp=42,S=Math.max(110,m*sp+16),d=22,W=Math.max(300,S+2*d+2*15+40),cx=W/2,cy=34+15+d+S/2+6,h=S/2;
+  const s=[];let n=1;const off=(k,i)=>(i-(k-1)/2)*(S/k>sp?S/k:sp);
+  for(let i=0;i<L[0];i++)s.push({n:n++,x:cx+off(L[0],i),y:cy-h-d});        // arriba (tarima): izq→der
+  for(let i=0;i<L[1];i++)s.push({n:n++,x:cx+h+d,y:cy+off(L[1],i)});        // derecha: arriba→abajo
+  for(let i=0;i<L[2];i++)s.push({n:n++,x:cx-off(L[2],i),y:cy+h+d});        // abajo: der→izq
+  for(let i=0;i<L[3];i++)s.push({n:n++,x:cx-h-d,y:cy-off(L[3],i)});        // izquierda: abajo→arriba
+  return {W,H:cy+h+d+15+38,cx,cy,mesa:{w:S,h:S},s,r:15}}
  const R=Math.max(80,N*36/(2*Math.PI)),r=N>14?12:15,W=Math.max(300,2*R+2*r+40),cx=W/2,cy=34+r+R+6;
  const s=[];for(let i=0;i<N;i++){const a=-Math.PI/2+i*2*Math.PI/N;s.push({n:i+1,x:cx+R*Math.cos(a),y:cy+R*Math.sin(a)})}
  return {W,H:cy+R+r+38,cx,cy,mesa:{r:R-r-14},s,r}}
@@ -37,6 +46,7 @@ function plano(m){let s='<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/200
  C.elementos.forEach(e=>{s+=`<rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="6" fill="${e.oscuro?'#0f1f3d':e.pista?'#f4ecd8':e.entrada?'#c9a24a':'#33456b'}"/><text x="${e.x+e.w/2}" y="${e.y+e.h/2+4}" font-size="11" text-anchor="middle" fill="${e.pista?'#8a6a24':'#fff'}" font-family="Georgia">${e.texto}</text>`});
  C.mesas.forEach(t=>{const on=t.mesa==m,f=on?'#c9a24a':'#fff',st=on?'#0f1f3d':'#c9a24a',sw=on?3:2;
  if(t.forma=="rectangular"){const w=on?76:64,h=on?40:34;s+=`<rect x="${t.x-w/2}" y="${t.y-h/2}" width="${w}" height="${h}" rx="5" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`}
+ else if(t.forma=="cuadrada"){const w=on?52:44;s+=`<rect x="${t.x-w/2}" y="${t.y-w/2}" width="${w}" height="${w}" rx="5" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`}
  else s+=`<circle cx="${t.x}" cy="${t.y}" r="${on?30:24}" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`;
  s+=`<text x="${t.x}" y="${t.y+6}" font-size="${on?20:16}" text-anchor="middle" fill="${on?'#fff':'#0f1f3d'}" font-family="Georgia" font-weight="bold">${t.mesa}</text>`;
  if(on)s+=`<text x="${t.x}" y="${t.y-38}" font-size="12" text-anchor="middle" fill="#c9a24a" font-family="Georgia">★ Tu mesa</text>`});
@@ -50,7 +60,7 @@ function mostrar(g){const t=mesaInfo(g.mesa),nom=t.nombre?` · ${esc(t.nombre)}`
  `<div class="tn">Mesa ${g.mesa}${nom}</div>`+
  (okP?deCerca(t,g.puesto)+`<div class="msg">Tu silla es la dorada. El puesto 1 es el que mira hacia la ${esc((C.frente||"tarima").toLowerCase())} y los demás siguen como las agujas del reloj.</div>`:"")+
  `<div class="sub">Ubicación de tu mesa en el salón</div>${plano(g.mesa)}<div class="msg">¡Disfruta el evento!</div></div>`}
-if(typeof module!="undefined"){module.exports={norm,parseCSV,buscar,sillas,mesaInfo,deCerca,mostrar};return}
+if(typeof module!="undefined"){module.exports={lados,norm,parseCSV,buscar,sillas,mesaInfo,deCerca,mostrar};return}
 document.getElementById("b").textContent=C.bienvenida||"¡Bienvenidos!";document.getElementById("t").textContent=C.novios?((C.titulo?C.titulo+" ":"")+C.novios):(C.titulo||"");document.getElementById("d").textContent=C.fecha+(C.lugar?" · "+C.lugar:"");
 const q=document.getElementById("q"),r=document.getElementById("r");let L=[];
 function upd(){const res=buscar(L,q.value);
