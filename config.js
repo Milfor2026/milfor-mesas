@@ -1,6 +1,10 @@
 // ===== CONFIGURACIÓN DEL EVENTO (editar aquí) =====
 window.MILFOR_CONFIG = {
-  titulo: "Evento de prueba Milfor",
+  // Nombres de los novios (EJEMPLO: cámbielos por los reales). Deje "" si no es boda.
+  novios: "Laura & Andrés",
+  bienvenida: "¡Bienvenidos!",
+  titulo: "Boda de",  // se muestra antes de los novios; si novios está vacío se muestra solo
+
   fecha: "Sábado 14 de noviembre de 2026 · 7:00 p.m.",
   lugar: "Salón principal",
   // Deje vacío para usar invitados.csv. O pegue la URL CSV publicada de Google Sheets
