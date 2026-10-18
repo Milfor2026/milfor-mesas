@@ -9,7 +9,15 @@ window.MILFOR_CONFIG = {
 
   fecha: "Sábado 14 de noviembre de 2026 · 7:00 p.m.",
   lugar: "Salón principal",
-  // Deje vacío para usar invitados.csv. O pegue la URL CSV publicada de Google Sheets
+  // Fecha en que la página deja de mostrar la lista y muestra un "¡Gracias!" (formato "AAAA-MM-DD").
+  // Desde ese día ya no se puede buscar a nadie. Deje "" para que no caduque.
+  fechaExpira: "",
+  mensajeGracias: "Gracias por acompañarnos en esta celebración.",
+  // Wi-Fi del salón para el letrero A5 (opcional). Deje "" si no hay.
+  wifi: {red: "", clave: ""},
+  // Deje vacío para usar la lista de la carpeta (invitados.dat, que preparar.py genera desde invitados.csv).
+  // OJO: con Google Sheets la lista publicada SÍ queda legible para quien tenga esa URL.
+  // O pegue la URL CSV publicada de Google Sheets
   // (Archivo > Compartir > Publicar en la web > CSV), columnas: nombre,mesa,puesto (puesto es opcional)
   csvUrl: "",
   // Mesas: número, nombre opcional, posición (x,y) en el plano de 400x500,
