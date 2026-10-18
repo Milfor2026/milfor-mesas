@@ -8,6 +8,6 @@ window.MILFOR_EMPRESA = {
   whatsappTexto: "Hola Milfor, quiero información para un evento",
   whatsappTexto_en: "Hello Milfor, I'd like information about an event",
   instagram: "eventosmilforgirardot",                         // @eventosmilforgirardot (verificado)
-  web: "https://milfor2026.github.io/",                      // página web de Milfor
+  web: "https://eventosmilfor.com/",                         // página web de Milfor
   resenaUrl: ""                                               // link de reseña de Google: vacío = no se muestra el botón
 };
