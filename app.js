@@ -38,7 +38,7 @@ function deCerca(t,p){const g=sillas(t),F="Georgia";
  if(C.atras)s+=`<text x="${g.cx}" y="${g.H-10}" font-size="11" text-anchor="middle" fill="#8a8f9c" font-family="${F}" letter-spacing="1">${esc(C.atras)} ▼</text>`;
  if(g.mesa.r)s+=`<circle cx="${g.cx}" cy="${g.cy}" r="${g.mesa.r}" fill="#f4ecd8" stroke="#c9a24a" stroke-width="2"/>`;
  else s+=`<rect x="${g.cx-g.mesa.w/2}" y="${g.cy-g.mesa.h/2}" width="${g.mesa.w}" height="${g.mesa.h}" rx="6" fill="#f4ecd8" stroke="#c9a24a" stroke-width="2"/>`;
- s+=`<text x="${g.cx}" y="${g.cy-3}" font-size="15" text-anchor="middle" fill="#0f1f3d" font-family="${F}" font-weight="bold">Mesa ${t.mesa}</text><text x="${g.cx}" y="${g.cy+15}" font-size="12" text-anchor="middle" fill="#8a6a24" font-family="${F}">Tu puesto: ${p}</text>`;
+ s+=`<text x="${g.cx}" y="${g.cy-3}" font-size="15" text-anchor="middle" fill="#0f1f3d" font-family="${F}" font-weight="bold">Mesa ${t.mesa}</text><text x="${g.cx}" y="${g.cy+15}" font-size="12" text-anchor="middle" fill="#8a6a24" font-family="${F}">${p?"Tu puesto: "+p:"★ Tu mesa"}</text>`;
  g.s.forEach(c=>{const on=c.n==p;
   s+=`<circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${on?g.r+3:g.r}" fill="${on?'#c9a24a':'#fff'}" stroke="${on?'#0f1f3d':'#c9a24a'}" stroke-width="${on?3:1.5}"/><text x="${c.x.toFixed(1)}" y="${(c.y+4.5).toFixed(1)}" font-size="${on?15:13}" text-anchor="middle" fill="${on?'#fff':'#0f1f3d'}" font-family="${F}" font-weight="bold">${c.n}</text>`});
  return s+'</svg>'}
@@ -54,7 +54,12 @@ function plano(m){let s='<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/200
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function mostrar(g){const t=mesaInfo(g.mesa),nom=t.nombre?` · ${esc(t.nombre)}`:"";
  const okP=g.puesto&&g.puesto<=t.asientos;
- if(!g.puesto)return `<div class="card"><div>Hola, <b>${esc(g.nombre)}</b></div><div class="msg">Tu mesa es la</div><div class="num">${g.mesa}</div><div>${esc(t.nombre||"")}</div>${plano(g.mesa)}<div class="msg">La mesa resaltada en dorado es la tuya. ¡Disfruta el evento!</div></div>`;
+ // Sin puesto (columna vacía o inexistente): solo la mesa, con la mesa resaltada y ninguna silla marcada.
+ if(!g.puesto)return `<div class="card"><div>Hola, <b>${esc(g.nombre)}</b></div>`+
+ `<div class="lug"><div class="box solo"><small>TU MESA</small><div class="num">${g.mesa}</div></div></div>`+
+ `<div class="tn">Mesa ${g.mesa}${nom}</div>`+
+ deCerca(t,null)+`<div class="msg">Puedes sentarte en cualquier silla de tu mesa.</div>`+
+ `<div class="sub">Ubicación de tu mesa en el salón</div>${plano(g.mesa)}<div class="msg">La mesa resaltada en dorado es la tuya. ¡Disfruta el evento!</div></div>`;
  return `<div class="card"><div>Hola, <b>${esc(g.nombre)}</b></div>`+
  `<div class="lug"><div class="box"><small>MESA</small><div class="num">${g.mesa}</div></div><div class="box pu"><small>PUESTO</small><div class="num">${g.puesto}</div></div></div>`+
  `<div class="tn">Mesa ${g.mesa}${nom}</div>`+
