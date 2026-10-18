@@ -2,28 +2,14 @@
 <title>Milfor · Encuentra tu mesa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-:root{--g:#c9a24a;--n:#0f1f3d;--iv:#fbf8f1}*{box-sizing:border-box}body{margin:0;font-family:"Cormorant Garamond",Georgia,serif;background:var(--iv);color:var(--n);font-size:18px}
-header{background:#fff;text-align:center;padding:22px 16px 18px;border-bottom:2px solid var(--g)}
-.logo{width:min(78%,300px);height:auto;display:block;margin:0 auto 12px}
-.bien{font-family:"Great Vibes",cursive;font-size:46px;color:var(--g);margin:4px 0 0;line-height:1.1}
-h1{font-size:24px;font-weight:600;margin:4px 0 4px;letter-spacing:.5px}.f{font-size:15px;color:#5a6478;font-style:italic}
-.orn{color:var(--g);letter-spacing:6px;font-size:13px;margin-top:6px}
-main{max-width:480px;margin:auto;padding:20px}label{font-size:17px;color:var(--n)}
-input{width:100%;font-size:19px;padding:12px;border:1px solid var(--g);border-radius:8px;margin-top:6px;font-family:inherit;background:#fff;color:var(--n)}
-button.op{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;border:1px solid #e5dcc6;background:#fff;border-radius:8px;font-size:17px;font-family:inherit;color:var(--n)}
-.card{border:1px solid var(--g);background:#fff;border-radius:12px;padding:16px;text-align:center;margin-top:14px}
-.num{font-size:68px;color:var(--g);line-height:1.15;font-weight:600;font-family:Georgia,"Times New Roman",serif;font-weight:normal;margin-bottom:4px}.msg{color:#5a6478;font-size:16px;margin-top:10px}
-svg{width:100%;margin-top:12px;border:1px solid #eee;border-radius:8px}
-.lug{display:flex;gap:10px;margin-top:10px}.box{flex:1;border:1px solid #e5dcc6;border-radius:10px;padding:6px 4px 2px;background:var(--iv)}
-.box small{display:block;font-size:13px;letter-spacing:2px;color:#5a6478}.box .num{font-size:54px;margin:0}.box.pu{background:var(--n)}.box.solo{flex:0 1 200px;margin:0 auto}.box.pu small{color:#e8d9b0}
-.tn{font-size:20px;font-weight:600;margin-top:8px}.sub{margin-top:16px;font-size:15px;letter-spacing:1px;color:var(--n);font-weight:600}
-svg.cerca{max-width:340px;display:block;margin:10px auto 0;border-color:#e5dcc6}footer{text-align:center;font-size:13px;color:#8a8f9c;padding:20px}
-.msg.sug{color:#8a6a24;font-size:19px;font-style:italic}.pista{font-size:14px;color:#8a6a24;font-style:italic}.grupo{margin-top:16px;text-align:left}.grupo .sub{text-align:center}button.miembro{display:flex;justify-content:space-between;gap:8px;width:100%;padding:10px 12px;margin:6px 0;border:1px solid #e5dcc6;background:var(--iv);border-radius:8px;font-size:16px;font-family:inherit;color:var(--n);text-align:left}button.miembro b{white-space:nowrap;color:#8a6a24}button.miembro i{font-size:14px;color:#5a6478}button.miembro.yo{border-color:var(--g);background:#fff;box-shadow:0 0 0 1px var(--g)}
-</style></head><body>
+<link rel="stylesheet" href="../estilo.css?v=4">
+</head><body>
+<button id="lang" class="lang" type="button">English</button><div id="ev"></div>
 <header><img class="logo" src="../logo.png" alt="Milfor Bodas &amp; Eventos"><p class="bien" id="b"></p><h1 id="t"></h1><div class="f" id="d"></div><div class="orn">✦ ✦ ✦</div></header>
-<main><label for="q">Escribe tu nombre o apellido para encontrar tu mesa</label>
-<input id="q" autocomplete="off" placeholder="Ej.: Ana Prueba"><div id="r"></div></main>
-<footer>Milfor · Encuentra tu mesa</footer>
-<script src="config.js?v=3"></script>
-<script src="../app.js?v=3"></script></body></html>
+<main><section id="buscar"><label for="q" id="lq">Escribe tu nombre o apellido para encontrar tu mesa</label>
+<input id="q" autocomplete="off" placeholder="Ej.: Ana Prueba"><div id="r"></div></section>
+<div id="extra"></div></main>
+<footer id="pie"></footer>
+<script src="../milfor.js?v=4"></script>
+<script src="config.js?v=4"></script>
+<script src="../app.js?v=4"></script></body></html>

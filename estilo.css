@@ -1,0 +1,43 @@
+:root{--g:#c9a24a;--n:#0f1f3d;--iv:#fbf8f1}*{box-sizing:border-box}body{margin:0;font-family:"Cormorant Garamond",Georgia,serif;background:var(--iv);color:var(--n);font-size:18px}
+header{background:#fff;text-align:center;padding:44px 16px 18px;border-bottom:2px solid var(--g)}
+.logo{width:min(78%,300px);height:auto;display:block;margin:0 auto 12px}
+.bien{font-family:"Great Vibes",cursive;font-size:46px;color:var(--g);margin:4px 0 0;line-height:1.1}
+h1{font-size:24px;font-weight:600;margin:4px 0 4px;letter-spacing:.5px}.f{font-size:15px;color:#5a6478;font-style:italic}
+.orn{color:var(--g);letter-spacing:6px;font-size:13px;margin-top:6px}
+main{max-width:480px;margin:auto;padding:20px}label{font-size:17px;color:var(--n)}
+input{width:100%;font-size:19px;padding:12px;border:1px solid var(--g);border-radius:8px;margin-top:6px;font-family:inherit;background:#fff;color:var(--n)}
+button.op{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;border:1px solid #e5dcc6;background:#fff;border-radius:8px;font-size:17px;font-family:inherit;color:var(--n)}
+.card{border:1px solid var(--g);background:#fff;border-radius:12px;padding:16px;text-align:center;margin-top:14px}
+.num{font-size:68px;color:var(--g);line-height:1.15;font-weight:600;font-family:Georgia,"Times New Roman",serif;font-weight:normal;margin-bottom:4px}.msg{color:#5a6478;font-size:16px;margin-top:10px}
+svg{width:100%;margin-top:12px;border:1px solid #eee;border-radius:8px}
+.lug{display:flex;gap:10px;margin-top:10px}.box{flex:1;border:1px solid #e5dcc6;border-radius:10px;padding:6px 4px 2px;background:var(--iv)}
+.box small{display:block;font-size:13px;letter-spacing:2px;color:#5a6478}.box .num{font-size:54px;margin:0}.box.pu{background:var(--n)}.box.solo{flex:0 1 200px;margin:0 auto}.box.pu small{color:#e8d9b0}
+.tn{font-size:20px;font-weight:600;margin-top:8px}.sub{margin-top:16px;font-size:15px;letter-spacing:1px;color:var(--n);font-weight:600}
+svg.cerca{max-width:340px;display:block;margin:10px auto 0;border-color:#e5dcc6}
+.msg.sug{color:#8a6a24;font-size:19px;font-style:italic}.pista{font-size:14px;color:#8a6a24;font-style:italic}.grupo{margin-top:16px;text-align:left}.grupo .sub{text-align:center}button.miembro{display:flex;justify-content:space-between;gap:8px;width:100%;padding:10px 12px;margin:6px 0;border:1px solid #e5dcc6;background:var(--iv);border-radius:8px;font-size:16px;font-family:inherit;color:var(--n);text-align:left}button.miembro b{white-space:nowrap;color:#8a6a24}button.miembro i{font-size:14px;color:#5a6478}button.miembro.yo{border-color:var(--g);background:#fff;box-shadow:0 0 0 1px var(--g)}
+
+/* barra superior: idioma y letra del evento */
+.lang{position:fixed;top:8px;left:8px;z-index:9;font:600 12px/1 Georgia,serif;letter-spacing:1px;color:var(--n);background:#fff;border:1px solid var(--g);border-radius:12px;padding:6px 10px;opacity:.95}
+#ev{display:none;position:fixed;top:8px;right:8px;font:600 11px/1 Georgia,serif;letter-spacing:1px;color:var(--n);background:var(--g);border-radius:10px;padding:5px 8px;opacity:.85;z-index:9}
+/* mensaje de los novios */
+.card.nov{background:linear-gradient(#fff,#fdfaf3)}.mono{width:74px;height:74px;border-radius:50%;margin:2px auto 4px;border:1.5px solid var(--g);color:var(--g);font:26px/72px "Great Vibes",cursive}
+.foto{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--g);display:block;margin:0 auto 6px}
+.carta{font-style:italic;font-size:19px;line-height:1.45;margin:8px 4px}.firma{font-family:"Great Vibes",cursive;font-size:28px;color:var(--g)}
+.nov .sub{margin-top:4px}
+/* secciones plegables */
+details.sec{background:#fff;border:1px solid #e5dcc6;border-radius:12px;margin-top:12px;overflow:hidden}
+details.sec summary{list-style:none;cursor:pointer;padding:14px 16px;font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+details.sec summary::-webkit-details-marker{display:none}details.sec summary span{color:var(--g)}
+details.sec summary::after{content:"+";margin-left:auto;color:var(--g);font-size:22px;line-height:1}details.sec[open] summary::after{content:"–"}
+details.sec .cont{padding:0 16px 14px;border-top:1px solid #f0e8d6}
+ul.prog{list-style:none;padding:0;margin:8px 0 0}ul.prog li{display:flex;gap:12px;padding:8px 0;border-bottom:1px dotted #e5dcc6}ul.prog li:last-child{border:0}
+ul.prog b{min-width:78px;color:#8a6a24;font-weight:600}.plato{text-align:center;padding:10px 0;border-bottom:1px dotted #e5dcc6}.plato:last-child{border:0}
+.plato small{display:block;letter-spacing:2px;font-size:12px;color:#8a6a24;text-transform:uppercase}.plato div{font-size:18px;font-weight:600}.plato i{font-size:15px;color:#5a6478}
+.btn{display:inline-block;margin:8px 0;padding:10px 16px;border-radius:24px;background:var(--g);color:#fff;text-decoration:none;font-weight:600}
+.btn.grande{display:block;text-align:center;margin-top:14px;padding:14px;border-radius:12px;font-size:19px}.btn.grande small{display:block;font-weight:400;font-size:14px;opacity:.9}
+.btn.oscuro{background:var(--n)}
+.comp{margin-top:14px}.comp .nombres{font-size:17px;margin-top:4px;line-height:1.5}.aviso{text-align:center;color:#8a6a24}
+/* pie Milfor */
+.pie{text-align:center;padding:26px 16px 30px;color:#8a8f9c;font-size:13px}.pie img{display:block;width:140px;margin:6px auto 8px;opacity:.9}
+.pie .planea{font-style:italic;font-size:15px;color:var(--n)}.pie .links{margin-top:6px}.pie .links a{color:#8a6a24;margin:0 9px;font-size:15px;text-decoration:none;border-bottom:1px solid #e5dcc6}
+@media print{.lang,#ev{display:none}}

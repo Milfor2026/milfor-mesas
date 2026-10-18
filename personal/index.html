@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Milfor · Personal</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../estilo.css?v=4">
+<style>
+main{max-width:900px}.evs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}.evs a{padding:6px 14px;border:1px solid var(--g);border-radius:16px;color:var(--n);text-decoration:none}
+.evs a.on{background:var(--n);color:#fff;border-color:var(--n)}.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.bar input{flex:1;min-width:200px;margin:0}
+.bar button,.pin button{font:inherit;font-size:16px;padding:10px 14px;border-radius:8px;border:1px solid var(--g);background:#fff;color:var(--n)}.bar button.on{background:var(--g);color:#fff}
+.stats{text-align:center;color:#5a6478;font-size:16px;margin:6px 0}.mesa{background:#fff;border:1px solid #e5dcc6;border-radius:10px;margin:12px 0;page-break-inside:avoid;break-inside:avoid}
+.mesa h3{margin:0;padding:8px 12px;background:var(--n);color:#fff;font-size:17px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between}.mesa h3 small{color:#e8d9b0;font-weight:400}
+table{width:100%;border-collapse:collapse;font-size:16px}td,th{padding:6px 10px;border-bottom:1px solid #f0e8d6;text-align:left;vertical-align:top}th{font-size:12px;letter-spacing:1px;color:#8a6a24;font-weight:600}
+td.p{width:52px;text-align:center;font-weight:600;color:#8a6a24}td.n{font-weight:600}td i{color:#5a6478}td.ll{width:56px;text-align:center}tr.llego td{background:#f3f8ef}
+.pin{max-width:340px;margin:30px auto;text-align:center}.pin input{text-align:center;letter-spacing:6px;font-size:24px}.err{color:#a33;margin-top:8px}
+.nota{font-size:13px;color:#8a8f9c;text-align:center;margin:8px 0}
+@media print{.bar,.evs,.lang,.nota,.noprint{display:none!important}body{background:#fff;font-size:12px}header{padding:6px;border:0}.logo{width:160px}.mesa{border-color:#999}td.ll{display:none}th.ll{display:none}}
+</style></head><body>
+<header><img class="logo" src="../logo.png" alt="Milfor"><h1>Vista del personal</h1><div class="f" id="d"></div></header>
+<main id="m"><div class="msg">Cargando…</div></main>
+<script>
+// Carga la configuración del evento elegido (?e=a, b, c; vacío = principal) y luego las funciones compartidas.
+(function(){const e=(new URLSearchParams(location.search).get("e")||"").toLowerCase().replace(/[^abc]/g,"").slice(0,1);
+ window.MILFOR_EV=e;window.MILFOR_BASE="../"+(e?e+"/":"");window.MILFOR_SOLO_FUNCIONES=true;
+ const s=["../milfor.js?v=4",window.MILFOR_BASE+"config.js?v=4","../app.js?v=4","../personal.js?v=4"];
+ (function sig(i){if(i>=s.length)return;const x=document.createElement("script");x.src=s[i];x.onload=()=>sig(i+1);
+  x.onerror=()=>{document.getElementById("m").innerHTML='<div class="msg">No se pudo cargar '+s[i]+'</div>'};document.body.appendChild(x)})(0)})();
+</script></body></html>

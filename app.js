@@ -1,5 +1,33 @@
 (function(){
 const C=(typeof window!="undefined"&&window.MILFOR_CONFIG)||(typeof global!="undefined"&&global.MILFOR_CONFIG)||{mesas:[],elementos:[]};
+// ===== Idiomas: español (por defecto) e inglés =====
+const TXT={es:{label:"Escribe tu nombre o apellido para encontrar tu mesa",ph:"Ej.: Ana Prueba",corto:"Escribe al menos 3 letras de tu nombre o apellido.",
+ nada:"No encontramos ese nombre. Revisa la ortografía, prueba solo con tu apellido o pregunta al personal de Milfor.",muchos:"Hay muchas personas con ese nombre. Escribe también tu apellido.",
+ varios:"Hay varias coincidencias, elige tu nombre:",sug:"¿Quisiste decir…?",carga:"No se pudo cargar la lista de invitados.",hola:"Hola",MESA:"MESA",PUESTO:"PUESTO",TUMESA:"TU MESA",
+ mesa:"Mesa",puesto:"Puesto",tuPuesto:"Tu puesto: ",estrella:"★ Tu mesa",cualquier:"Puedes sentarte en cualquier silla de tu mesa.",
+ dorada:f=>`Tu silla es la dorada. El puesto 1 es el que mira hacia la ${f} y los demás siguen como las agujas del reloj.`,ubic:"Ubicación de tu mesa en el salón",
+ resaltada:"La mesa resaltada en dorado es la tuya. ¡Disfruta el evento!",disfruta:"¡Disfruta el evento!",grupo:"Tu grupo",toca:"Toca un nombre para ver su mesa.",
+ companeros:"En tu mesa también están",programa:"Programa de la noche",menu:"Menú de la noche",llegar:"Cómo llegar",mapa:"Abrir en Google Maps",parqueo:"Estacionamiento",
+ fotos:"Sube tus fotos",fotosSub:"Comparte tus fotos del evento con los novios",mensaje:"Unas palabras para ti",gracias:"¡Gracias!",graciasDef:"Gracias por acompañarnos en esta celebración.",
+ termino:"Este evento ya terminó y la lista de mesas ya no está disponible.",resena:"Déjanos tu reseña en Google",resenaSub:"¿Te gustó la organización? Nos encantaría leerte.",
+ organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final"},
+en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba",corto:"Please type at least 3 letters of your first or last name.",
+ nada:"We couldn't find that name. Check the spelling, try just your last name, or ask the Milfor staff.",muchos:"Many guests match that name. Please add your last name.",
+ varios:"Several guests match — please choose your name:",sug:"Did you mean…?",carga:"The guest list could not be loaded.",hola:"Hello",MESA:"TABLE",PUESTO:"SEAT",TUMESA:"YOUR TABLE",
+ mesa:"Table",puesto:"Seat",tuPuesto:"Your seat: ",estrella:"★ Your table",cualquier:"You may sit in any chair at your table.",
+ dorada:f=>`Your chair is the gold one. Seat 1 faces the ${f}; the others follow clockwise.`,ubic:"Where your table is in the room",
+ resaltada:"Your table is highlighted in gold. Enjoy the celebration!",disfruta:"Enjoy the celebration!",grupo:"Your group",toca:"Tap a name to see their table.",
+ companeros:"Also at your table",programa:"Tonight's schedule",menu:"Tonight's menu",llegar:"Getting there",mapa:"Open in Google Maps",parqueo:"Parking",
+ fotos:"Upload your photos",fotosSub:"Share your photos of the celebration with the couple",mensaje:"A few words for you",gracias:"Thank you!",graciasDef:"Thank you for celebrating with us.",
+ termino:"This event has ended and the seating list is no longer available.",resena:"Leave us a Google review",resenaSub:"Did you enjoy the event? We'd love to hear from you.",
+ organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen"}};
+let LANG="es";
+const tr=(k,...a)=>{const v=(TXT[LANG]||TXT.es)[k];return typeof v=="function"?v(...a):(v==null?TXT.es[k]:v)};
+// Texto de la configuración en el idioma actual: usa campo_en si existe, si no el español
+const tc=(o,k)=>(o&&((LANG=="en"&&o[k+"_en"])||o[k]))||"";
+function setLang(l){LANG=l=="en"?"en":"es"}
+function idiomaInicial(){try{const p=new URLSearchParams(location.search).get("lang");if(p)return p;const s=localStorage.getItem("milfor-lang");if(s)return s}catch(e){}
+ const n=(typeof navigator!="undefined"&&(navigator.languages||[navigator.language]))||[];const f=n.find(x=>/^(en|es)/i.test(x||""))||"es";return /^en/i.test(f)?"en":"es"}
 const norm=s=>(s||"").replace(/['’]/g,"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9ñ ]+/g," ").replace(/\s+/g," ").trim();
 // CSV: columnas nombre,mesa[,puesto][,grupo][,nota]. Acepta coma o punto y coma. Si hay encabezado, usa los nombres de columna.
 function parseCSV(t){const rows=[];let ix={nombre:0,mesa:1,puesto:2,grupo:3,nota:4};
@@ -54,9 +82,7 @@ function resolver(lista,q){const n=norm(q);if(!n)return{tipo:"vacio",items:[]};i
  const r=buscar(lista,q);if(r.length==1)return{tipo:"uno",items:r};if(r.length>MAX)return{tipo:"muchos",items:[]};if(r.length)return{tipo:"varios",items:r};
  const s=sugerir(lista,q,3);return s.length?{tipo:"sugerencias",items:s}:{tipo:"nada",items:[]}}
 // Pista para distinguir nombres repetidos
-function pista(g,lista){const rep=lista.filter(x=>norm(x.nombre)==norm(g.nombre)).length>1;if(!rep)return"";return g.nota||g.grupo||("Mesa "+g.mesa)}
-function expirado(c,ahora){if(!c.fechaExpira)return false;const p=String(c.fechaExpira).split("-").map(Number);if(p.length<3||p.some(isNaN))return false;
- return (ahora||new Date())>=new Date(p[0],p[1]-1,p[2]+1)}
+function pista(g,lista){const rep=lista.filter(x=>norm(x.nombre)==norm(g.nombre)).length>1;if(!rep)return"";return g.nota||g.grupo||(tr("mesa")+" "+g.mesa)}
 const mesaInfo=m=>{const t=C.mesas.find(x=>x.mesa==m)||{mesa:m};return Object.assign({asientos:C.asientosPorDefecto||10,forma:"redonda"},t)};
 // Posiciones de sillas en el dibujo de cerca. Arriba = lado de la tarima.
 // Puesto 1 = el del lado de la tarima; luego sentido de las agujas del reloj.
@@ -79,61 +105,104 @@ function sillas(t){const N=Math.max(1,t.asientos|0);
  return {W,H:cy+R+r+38,cx,cy,mesa:{r:R-r-14},s,r}}
 function deCerca(t,p){const g=sillas(t),F="Georgia";
  let s=`<svg class="cerca" viewBox="0 0 ${g.W.toFixed(0)} ${g.H.toFixed(0)}" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="${g.W-2}" height="${g.H-2}" rx="8" fill="#fff"/>`;
- const fr=C.frente||"TARIMA";s+=`<rect x="${g.cx-70}" y="6" width="140" height="22" rx="11" fill="#0f1f3d"/><text x="${g.cx}" y="21.5" font-size="12" text-anchor="middle" fill="#fff" font-family="${F}" letter-spacing="1">▲ ${esc(fr)}</text>`;
- if(C.atras)s+=`<text x="${g.cx}" y="${g.H-10}" font-size="11" text-anchor="middle" fill="#8a8f9c" font-family="${F}" letter-spacing="1">${esc(C.atras)} ▼</text>`;
+ const fr=tc(C,"frente")||tr("tarima");s+=`<rect x="${g.cx-70}" y="6" width="140" height="22" rx="11" fill="#0f1f3d"/><text x="${g.cx}" y="21.5" font-size="12" text-anchor="middle" fill="#fff" font-family="${F}" letter-spacing="1">▲ ${esc(fr)}</text>`;
+ if(tc(C,"atras"))s+=`<text x="${g.cx}" y="${g.H-10}" font-size="11" text-anchor="middle" fill="#8a8f9c" font-family="${F}" letter-spacing="1">${esc(tc(C,"atras"))} ▼</text>`;
  if(g.mesa.r)s+=`<circle cx="${g.cx}" cy="${g.cy}" r="${g.mesa.r}" fill="#f4ecd8" stroke="#c9a24a" stroke-width="2"/>`;
  else s+=`<rect x="${g.cx-g.mesa.w/2}" y="${g.cy-g.mesa.h/2}" width="${g.mesa.w}" height="${g.mesa.h}" rx="6" fill="#f4ecd8" stroke="#c9a24a" stroke-width="2"/>`;
- s+=`<text x="${g.cx}" y="${g.cy-3}" font-size="15" text-anchor="middle" fill="#0f1f3d" font-family="${F}" font-weight="bold">Mesa ${t.mesa}</text><text x="${g.cx}" y="${g.cy+15}" font-size="12" text-anchor="middle" fill="#8a6a24" font-family="${F}">${p?"Tu puesto: "+p:"★ Tu mesa"}</text>`;
+ s+=`<text x="${g.cx}" y="${g.cy-3}" font-size="15" text-anchor="middle" fill="#0f1f3d" font-family="${F}" font-weight="bold">${tr("mesa")} ${t.mesa}</text><text x="${g.cx}" y="${g.cy+15}" font-size="12" text-anchor="middle" fill="#8a6a24" font-family="${F}">${p?tr("tuPuesto")+p:tr("estrella")}</text>`;
  g.s.forEach(c=>{const on=c.n==p;
   s+=`<circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${on?g.r+3:g.r}" fill="${on?'#c9a24a':'#fff'}" stroke="${on?'#0f1f3d':'#c9a24a'}" stroke-width="${on?3:1.5}"/><text x="${c.x.toFixed(1)}" y="${(c.y+4.5).toFixed(1)}" font-size="${on?15:13}" text-anchor="middle" fill="${on?'#fff':'#0f1f3d'}" font-family="${F}" font-weight="bold">${c.n}</text>`});
  return s+'</svg>'}
 function plano(m){let s='<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="396" height="496" fill="#fff" stroke="#0f1f3d"/>';
- C.elementos.forEach(e=>{s+=`<rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="6" fill="${e.oscuro?'#0f1f3d':e.pista?'#f4ecd8':e.entrada?'#c9a24a':'#33456b'}"/><text x="${e.x+e.w/2}" y="${e.y+e.h/2+4}" font-size="11" text-anchor="middle" fill="${e.pista?'#8a6a24':'#fff'}" font-family="Georgia">${e.texto}</text>`});
+ C.elementos.forEach(e=>{s+=`<rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="6" fill="${e.oscuro?'#0f1f3d':e.pista?'#f4ecd8':e.entrada?'#c9a24a':'#33456b'}"/><text x="${e.x+e.w/2}" y="${e.y+e.h/2+4}" font-size="11" text-anchor="middle" fill="${e.pista?'#8a6a24':'#fff'}" font-family="Georgia">${esc(tc(e,"texto"))}</text>`});
  C.mesas.forEach(t=>{const on=t.mesa==m,f=on?'#c9a24a':'#fff',st=on?'#0f1f3d':'#c9a24a',sw=on?3:2;
  if(t.forma=="rectangular"){const w=on?76:64,h=on?40:34;s+=`<rect x="${t.x-w/2}" y="${t.y-h/2}" width="${w}" height="${h}" rx="5" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`}
  else if(t.forma=="cuadrada"){const w=on?52:44;s+=`<rect x="${t.x-w/2}" y="${t.y-w/2}" width="${w}" height="${w}" rx="5" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`}
  else s+=`<circle cx="${t.x}" cy="${t.y}" r="${on?30:24}" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`;
  s+=`<text x="${t.x}" y="${t.y+6}" font-size="${on?20:16}" text-anchor="middle" fill="${on?'#fff':'#0f1f3d'}" font-family="Georgia" font-weight="bold">${t.mesa}</text>`;
- if(on)s+=`<text x="${t.x}" y="${t.y-38}" font-size="12" text-anchor="middle" fill="#c9a24a" font-family="Georgia">★ Tu mesa</text>`});
+ if(on)s+=`<text x="${t.x}" y="${t.y-38}" font-size="12" text-anchor="middle" fill="#c9a24a" font-family="Georgia">${tr("estrella")}</text>`});
  return s+'</svg>'}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const lugarTxt=g=>"Mesa "+g.mesa+(g.puesto?" · Puesto "+g.puesto:"");
+const url=u=>/^(https?:|mailto:|tel:)/i.test(u||"")||/^[\w./-]+$/.test(u||"")?u:"";   // solo enlaces normales
+const lugarTxt=g=>tr("mesa")+" "+g.mesa+(g.puesto?" · "+tr("puesto")+" "+g.puesto:"");
+const primerNombre=n=>String(n||"").trim().split(/\s+/)[0];
 function grupoHTML(g,lista){if(!g.grupo||!lista)return"";const m=lista.filter(x=>x.grupo&&norm(x.grupo)==norm(g.grupo));if(m.length<2)return"";
- return `<div class="grupo"><div class="sub">Tu grupo · ${esc(g.grupo)}</div>`+m.map(x=>{const yo=x===g;
+ return `<div class="grupo"><div class="sub">${tr("grupo")} · ${esc(g.grupo)}</div>`+m.map(x=>{const yo=x===g;
   return `<button class="miembro${yo?" yo":""}" data-k="${lista.indexOf(x)}"><span>${esc(x.nombre)}${x.nota?` <i>(${esc(x.nota)})</i>`:""}</span><b>${lugarTxt(x)}</b></button>`}).join("")+
- `<div class="msg">Toca un nombre para ver su mesa.</div></div>`}
-function mostrar(g,lista){const t=mesaInfo(g.mesa),nom=t.nombre?` · ${esc(t.nombre)}`:"";
+ `<div class="msg">${tr("toca")}</div></div>`}
+// Compañeros de mesa: SOLO primeros nombres (privacidad). Se apaga con companeros:false en config.js
+function companeros(g,lista){if(C.companeros===false||!lista)return[];return lista.filter(x=>x!==g&&x.mesa==g.mesa).sort((a,b)=>(a.puesto||99)-(b.puesto||99)).map(x=>primerNombre(x.nombre))}
+function companerosHTML(g,lista){const c=companeros(g,lista);if(!c.length)return"";return `<div class="comp"><div class="sub">${tr("companeros")}</div><div class="nombres">${c.map(esc).join(" · ")}</div></div>`}
+function mostrar(g,lista){const t=mesaInfo(g.mesa),tn=tc(t,"nombre"),nom=tn?` · ${esc(tn)}`:"";
  const okP=g.puesto&&g.puesto<=t.asientos,p=lista?pista(g,lista):"";
- const hola=`<div>Hola, <b>${esc(g.nombre)}</b>${p?`<div class="pista">${esc(p)}</div>`:""}</div>`,gr=grupoHTML(g,lista);
+ const hola=`<div>${tr("hola")}, <b>${esc(g.nombre)}</b>${p?`<div class="pista">${esc(p)}</div>`:""}</div>`,gr=grupoHTML(g,lista),cm=companerosHTML(g,lista);
  // Sin puesto (columna vacía o inexistente): solo la mesa, con la mesa resaltada y ninguna silla marcada.
  if(!g.puesto)return `<div class="card">${hola}`+
- `<div class="lug"><div class="box solo"><small>TU MESA</small><div class="num">${g.mesa}</div></div></div>`+
- `<div class="tn">Mesa ${g.mesa}${nom}</div>`+
- deCerca(t,null)+`<div class="msg">Puedes sentarte en cualquier silla de tu mesa.</div>`+gr+
- `<div class="sub">Ubicación de tu mesa en el salón</div>${plano(g.mesa)}<div class="msg">La mesa resaltada en dorado es la tuya. ¡Disfruta el evento!</div></div>`;
+ `<div class="lug"><div class="box solo"><small>${tr("TUMESA")}</small><div class="num">${g.mesa}</div></div></div>`+
+ `<div class="tn">${tr("mesa")} ${g.mesa}${nom}</div>`+
+ deCerca(t,null)+`<div class="msg">${tr("cualquier")}</div>`+cm+gr+
+ `<div class="sub">${tr("ubic")}</div>${plano(g.mesa)}<div class="msg">${tr("resaltada")}</div></div>`;
  return `<div class="card">${hola}`+
- `<div class="lug"><div class="box"><small>MESA</small><div class="num">${g.mesa}</div></div><div class="box pu"><small>PUESTO</small><div class="num">${g.puesto}</div></div></div>`+
- `<div class="tn">Mesa ${g.mesa}${nom}</div>`+
- (okP?deCerca(t,g.puesto)+`<div class="msg">Tu silla es la dorada. El puesto 1 es el que mira hacia la ${esc((C.frente||"tarima").toLowerCase())} y los demás siguen como las agujas del reloj.</div>`:"")+gr+
- `<div class="sub">Ubicación de tu mesa en el salón</div>${plano(g.mesa)}<div class="msg">¡Disfruta el evento!</div></div>`}
-function opciones(items,lista,titulo){return `<div class="msg${titulo[0]=="¿"?" sug":""}">${titulo}</div>`+items.map((g,i)=>{const p=pista(g,lista);
+ `<div class="lug"><div class="box"><small>${tr("MESA")}</small><div class="num">${g.mesa}</div></div><div class="box pu"><small>${tr("PUESTO")}</small><div class="num">${g.puesto}</div></div></div>`+
+ `<div class="tn">${tr("mesa")} ${g.mesa}${nom}</div>`+
+ (okP?deCerca(t,g.puesto)+`<div class="msg">${tr("dorada",esc((tc(C,"frente")||tr("tarima")).toLowerCase()))}</div>`:"")+cm+gr+
+ `<div class="sub">${tr("ubic")}</div>${plano(g.mesa)}<div class="msg">${tr("disfruta")}</div></div>`}
+function opciones(items,lista,titulo,sug){return `<div class="msg${sug?" sug":""}">${titulo}</div>`+items.map((g,i)=>{const p=pista(g,lista);
  return `<button class="op" data-i="${i}">${esc(g.nombre)}${p?` <span class="pista">· ${esc(p)}</span>`:""}</button>`}).join("")}
-if(typeof module!="undefined"){module.exports={lados,norm,parseCSV,decodificar,buscar,sugerir,resolver,pista,expirado,dist,APODOS,sillas,mesaInfo,deCerca,mostrar,opciones,MAX,MIN};return}
-if(C.evento){const e=document.createElement("div");e.textContent="Evento "+C.evento;e.setAttribute("style","position:fixed;top:8px;right:8px;font:600 11px/1 Georgia,serif;letter-spacing:1px;color:#0f1f3d;background:#c9a24a;border-radius:10px;padding:5px 8px;opacity:.85;z-index:9");document.body.appendChild(e);document.title+=" · Evento "+C.evento}
-document.getElementById("b").textContent=C.bienvenida||"¡Bienvenidos!";document.getElementById("t").textContent=C.novios?((C.titulo?C.titulo+" ":"")+C.novios):(C.titulo||"");document.getElementById("d").textContent=(C.fecha||"")+(C.lugar?" · "+C.lugar:"");
-const q=document.getElementById("q"),r=document.getElementById("r");let L=[];
-if(expirado(C)){const m=document.querySelector("main");m.innerHTML=`<div class="card"><p class="bien" style="font-size:38px">¡Gracias!</p><div class="tn">${esc(C.mensajeGracias||"Gracias por acompañarnos en esta celebración.")}</div><div class="msg">Este evento ya terminó y la lista de mesas ya no está disponible.</div></div>`;return}
-function ver(g){q.value=g.nombre;r.innerHTML=mostrar(g,L);
+// ===== Secciones opcionales (se ocultan si no están configuradas) =====
+const E=()=>Object.assign({},(typeof window!="undefined"&&window.MILFOR_EMPRESA)||(typeof global!="undefined"&&global.MILFOR_EMPRESA)||{},C.milfor||{});
+function iniciales(n){const p=String(n||"").split(/\s*(?:&|\by\b|\band\b)\s*/i).filter(Boolean);return p.length>1?p.slice(0,2).map(x=>x.trim()[0].toUpperCase()).join(" & "):""}
+function mensajeHTML(){const m=tc(C,"mensajeNovios");if(!m)return"";const f=url(C.fotoNovios),ini=iniciales(C.novios);
+ return `<div class="card nov">${f?`<img class="foto" src="${esc(f)}" alt="">`:ini?`<div class="mono">${esc(ini)}</div>`:""}<div class="sub">${tr("mensaje")}</div><p class="carta">“${esc(m)}”</p>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}</div>`}
+function seccion(id,tit,html){return `<details class="sec" id="sec-${id}"><summary><span>✦</span> ${tit}</summary><div class="cont">${html}</div></details>`}
+function programaHTML(){const p=(C.programa||[]).filter(x=>tc(x,"titulo"));if(!p.length)return"";
+ return seccion("programa",tr("programa"),`<ul class="prog">${p.map(x=>`<li><b>${esc(tc(x,"hora"))}</b><span>${esc(tc(x,"titulo"))}</span></li>`).join("")}</ul>`)}
+function menuHTML(){const m=(C.menu||[]).filter(x=>tc(x,"plato"));if(!m.length)return"";
+ return seccion("menu",tr("menu"),m.map(x=>`<div class="plato">${tc(x,"tiempo")?`<small>${esc(tc(x,"tiempo"))}</small>`:""}<div>${esc(tc(x,"plato"))}</div>${tc(x,"detalle")?`<i>${esc(tc(x,"detalle"))}</i>`:""}</div>`).join(""))}
+function mapsUrl(l){return url(l.mapsUrl)||(l.direccion?"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(l.direccion):"")}
+function llegarHTML(){const l=C.llegar||{};if(!l.direccion&&!l.mapsUrl&&!tc(l,"parqueo"))return"";const m=mapsUrl(l);
+ return seccion("llegar",tr("llegar"),(tc(l,"lugar")?`<div class="tn">${esc(tc(l,"lugar"))}</div>`:"")+(l.direccion?`<p>${esc(l.direccion)}</p>`:"")+
+  (m?`<a class="btn" href="${esc(m)}" target="_blank" rel="noopener">${tr("mapa")}</a>`:"")+(tc(l,"parqueo")?`<p><b>${tr("parqueo")}:</b> ${esc(tc(l,"parqueo"))}</p>`:""))}
+function albumHTML(){const a=url(C.albumUrl);if(!a)return"";return `<a class="btn grande" href="${esc(a)}" target="_blank" rel="noopener">📷 ${tr("fotos")}<small>${tr("fotosSub")}</small></a>`}
+function resenaHTML(){const r=url(E().resenaUrl);if(!r)return"";return `<a class="btn grande oscuro" href="${esc(r)}" target="_blank" rel="noopener">★ ${tr("resena")}<small>${tr("resenaSub")}</small></a>`}
+function extrasHTML(){return mensajeHTML()+albumHTML()+programaHTML()+menuHTML()+llegarHTML()}
+function pieHTML(pre){const e=E(),w=String(e.whatsapp||"").replace(/\D/g,""),links=[];
+ if(url(e.web))links.push(`<a href="${esc(e.web)}" target="_blank" rel="noopener">Web</a>`);
+ if(w)links.push(`<a href="https://wa.me/${w}" target="_blank" rel="noopener">WhatsApp</a>`);
+ if(e.instagram){const ig=/^https?:/.test(e.instagram)?e.instagram:"https://www.instagram.com/"+String(e.instagram).replace(/^@/,"");links.push(`<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>`)}
+ return `<div class="pie"><small>${tr("organizado")}</small><img src="${pre||""}logo.png" alt="Milfor Bodas &amp; Eventos">${links.length?`<div class="planea">${tr("planea")}</div><div class="links">${links.join("")}</div>`:""}</div>`}
+function graciasHTML(vista){return (vista?`<div class="msg aviso">${tr("vista")}</div>`:"")+`<div class="card"><p class="bien" style="font-size:44px;margin:0">${tr("gracias")}</p><div class="tn">${esc(tc(C,"mensajeGracias")||tr("graciasDef"))}</div>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}<div class="msg">${tr("termino")}</div></div>`+albumHTML()+resenaHTML()}
+// Fecha "AAAA-MM-DD": fechaGracias = desde ESE día se muestra "¡Gracias!"; fechaExpira = desde el día SIGUIENTE
+function fechaLocal(s,mas){const p=String(s||"").split("-").map(Number);if(p.length<3||p.some(isNaN))return null;return new Date(p[0],p[1]-1,p[2]+(mas||0))}
+function expirado(c,ahora){const n=ahora||new Date(),a=fechaLocal(c.fechaExpira,1),b=fechaLocal(c.fechaGracias,0);return !!((a&&n>=a)||(b&&n>=b))}
+const API={lados,norm,parseCSV,decodificar,buscar,sugerir,resolver,pista,expirado,dist,APODOS,sillas,mesaInfo,deCerca,plano,mostrar,opciones,companeros,iniciales,
+ extrasHTML,mensajeHTML,programaHTML,menuHTML,llegarHTML,albumHTML,resenaHTML,pieHTML,graciasHTML,setLang,tr,tc,TXT,MAX,MIN,esc};
+if(typeof module!="undefined"){module.exports=API;return}
+if(window.MILFOR_SOLO_FUNCIONES){window.MilforApp=API;return}
+// ===== Página del invitado =====
+const $=id=>document.getElementById(id),PRE=document.querySelector('script[src*="app.js"]').getAttribute("src").startsWith("../")?"../":"";
+const params=new URLSearchParams(location.search),q=$("q"),r=$("r");let L=[],actual=null,cargado=false;
+setLang(idiomaInicial());
+function cabecera(){document.documentElement.lang=LANG;$("b").textContent=tc(C,"bienvenida")||tr("bienvenida");
+ const ti=tc(C,"titulo");$("t").textContent=C.novios?((ti?ti+" ":"")+C.novios):ti;$("d").textContent=(tc(C,"fecha"))+(tc(C,"lugar")?" · "+tc(C,"lugar"):"");
+ $("lang").textContent=tr("otro");if(C.evento)$("ev").textContent=tr("evento")+" "+C.evento;$("pie").innerHTML=pieHTML(PRE)}
+const fin=expirado(C)||params.get("gracias")=="1";
+function pintar(){cabecera();
+ if(fin){$("buscar").style.display="none";$("b").style.display="none";$("extra").innerHTML=graciasHTML(!expirado(C));return}
+ $("lq").textContent=tr("label");q.placeholder=tr("ph");
+ const ab=[...document.querySelectorAll("details.sec[open]")].map(d=>d.id);$("extra").innerHTML=extrasHTML();ab.forEach(i=>{const d=$(i);if(d)d.open=true});
+ if(actual)ver(actual);else if(cargado)upd()}
+$("lang").onclick=()=>{setLang(LANG=="es"?"en":"es");try{localStorage.setItem("milfor-lang",LANG)}catch(e){}pintar()};
+if(C.evento){$("ev").style.display="block";document.title+=" · Evento "+C.evento}
+function ver(g){actual=g;q.value=g.nombre;r.innerHTML=mostrar(g,L);
  r.querySelectorAll("button.miembro").forEach(b=>b.onclick=()=>{ver(L[b.dataset.k]);window.scrollTo({top:0,behavior:"smooth"})})}
-function upd(){const x=resolver(L,q.value);
+function upd(){actual=null;const x=resolver(L,q.value);
  if(x.tipo=="vacio"){r.innerHTML="";return}
- if(x.tipo=="corto"){r.innerHTML='<div class="msg">Escribe al menos 3 letras de tu nombre o apellido.</div>';return}
- if(x.tipo=="nada"){r.innerHTML='<div class="msg">No encontramos ese nombre. Revisa la ortografía, prueba solo con tu apellido o pregunta al personal de Milfor.</div>';return}
- if(x.tipo=="muchos"){r.innerHTML='<div class="msg">Hay muchas personas con ese nombre. Escribe también tu apellido.</div>';return}
+ if(["corto","nada","muchos"].includes(x.tipo)){r.innerHTML=`<div class="msg">${tr(x.tipo)}</div>`;return}
  if(x.tipo=="uno"){ver(x.items[0]);return}
- r.innerHTML=opciones(x.items,L,x.tipo=="sugerencias"?"¿Quisiste decir…?":"Hay varias coincidencias, elige tu nombre:");
+ r.innerHTML=opciones(x.items,L,tr(x.tipo=="sugerencias"?"sug":"varios"),x.tipo=="sugerencias");
  r.querySelectorAll("button.op").forEach(b=>b.onclick=()=>ver(x.items[b.dataset.i]))}
-q.oninput=upd;
-const cargar=C.csvUrl?fetch(C.csvUrl).then(x=>x.text()).then(parseCSV):fetch("invitados.dat?v="+Date.now()).then(x=>{if(!x.ok)throw 0;return x.text()}).then(decodificar);
-cargar.then(l=>{L=l;const n=new URLSearchParams(location.search).get("n");if(n){q.value=n;}upd()}).catch(()=>{r.innerHTML='<div class="msg">No se pudo cargar la lista de invitados.</div>'});
+q.oninput=upd;pintar();
+if(!fin){const cargar=C.csvUrl?fetch(C.csvUrl).then(x=>x.text()).then(parseCSV):fetch("invitados.dat?v="+Date.now()).then(x=>{if(!x.ok)throw 0;return x.text()}).then(decodificar);
+ cargar.then(l=>{L=l;cargado=true;const n=params.get("n");if(n){q.value=n;}upd()}).catch(()=>{r.innerHTML=`<div class="msg">${tr("carga")}</div>`})}
 })();
