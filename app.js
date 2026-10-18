@@ -61,6 +61,7 @@ function mostrar(g){const t=mesaInfo(g.mesa),nom=t.nombre?` · ${esc(t.nombre)}`
  (okP?deCerca(t,g.puesto)+`<div class="msg">Tu silla es la dorada. El puesto 1 es el que mira hacia la ${esc((C.frente||"tarima").toLowerCase())} y los demás siguen como las agujas del reloj.</div>`:"")+
  `<div class="sub">Ubicación de tu mesa en el salón</div>${plano(g.mesa)}<div class="msg">¡Disfruta el evento!</div></div>`}
 if(typeof module!="undefined"){module.exports={lados,norm,parseCSV,buscar,sillas,mesaInfo,deCerca,mostrar};return}
+if(C.evento){const e=document.createElement("div");e.textContent="Evento "+C.evento;e.setAttribute("style","position:fixed;top:8px;right:8px;font:600 11px/1 Georgia,serif;letter-spacing:1px;color:#0f1f3d;background:#c9a24a;border-radius:10px;padding:5px 8px;opacity:.85;z-index:9");document.body.appendChild(e);document.title+=" · Evento "+C.evento}
 document.getElementById("b").textContent=C.bienvenida||"¡Bienvenidos!";document.getElementById("t").textContent=C.novios?((C.titulo?C.titulo+" ":"")+C.novios):(C.titulo||"");document.getElementById("d").textContent=C.fecha+(C.lugar?" · "+C.lugar:"");
 const q=document.getElementById("q"),r=document.getElementById("r");let L=[];
 function upd(){const res=buscar(L,q.value);
