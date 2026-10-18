@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Milfor · Personal</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../estilo.css?v=5">
+<link rel="stylesheet" href="../estilo.css?v=6">
 <style>
 main{max-width:900px}.evs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}.evs a{padding:6px 14px;border:1px solid var(--g);border-radius:16px;color:var(--n);text-decoration:none}
 .evs a.on{background:var(--n);color:#fff;border-color:var(--n)}.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.bar input{flex:1;min-width:200px;margin:0}
@@ -20,7 +20,7 @@ td.p{width:52px;text-align:center;font-weight:600;color:#8a6a24}td.n{font-weight
 // Carga la configuración del evento elegido (?e=a, b, c; vacío = principal) y luego las funciones compartidas.
 (function(){const e=(new URLSearchParams(location.search).get("e")||"").toLowerCase().replace(/[^abc]/g,"").slice(0,1);
  window.MILFOR_EV=e;window.MILFOR_BASE="../"+(e?e+"/":"");window.MILFOR_SOLO_FUNCIONES=true;
- const s=["../milfor.js?v=5",window.MILFOR_BASE+"config.js?v=5","../app.js?v=5","../personal.js?v=5"];
+ const s=["../milfor.js?v=6",window.MILFOR_BASE+"config.js?v=6","../app.js?v=6","../personal.js?v=6"];
  (function sig(i){if(i>=s.length)return;const x=document.createElement("script");x.src=s[i];x.onload=()=>sig(i+1);
   x.onerror=()=>{document.getElementById("m").innerHTML='<div class="msg">No se pudo cargar '+s[i]+'</div>'};document.body.appendChild(x)})(0)})();
 </script></body></html>
