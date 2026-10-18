@@ -10,7 +10,7 @@ const TXT={es:{label:"Escribe tu nombre o apellido para encontrar tu mesa",ph:"E
  companeros:"En tu mesa también están",programa:"Programa de la noche",menu:"Menú de la noche",llegar:"Cómo llegar",mapa:"Abrir en Google Maps",parqueo:"Estacionamiento",
  fotos:"Sube tus fotos",fotosSub:"Comparte tus fotos del evento con los novios",mensaje:"Unas palabras para ti",gracias:"¡Gracias!",graciasDef:"Gracias por acompañarnos en esta celebración.",
  termino:"Este evento ya terminó y la lista de mesas ya no está disponible.",resena:"Déjanos tu reseña en Google",resenaSub:"¿Te gustó la organización? Nos encantaría leerte.",
- organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final"},
+ organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final",ubicacion:"Ubicación"},
 en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba",corto:"Please type at least 3 letters of your first or last name.",
  nada:"We couldn't find that name. Check the spelling, try just your last name, or ask the Milfor staff.",muchos:"Many guests match that name. Please add your last name.",
  varios:"Several guests match — please choose your name:",sug:"Did you mean…?",carga:"The guest list could not be loaded.",hola:"Hello",MESA:"TABLE",PUESTO:"SEAT",TUMESA:"YOUR TABLE",
@@ -20,7 +20,7 @@ en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba"
  companeros:"Also at your table",programa:"Tonight's schedule",menu:"Tonight's menu",llegar:"Getting there",mapa:"Open in Google Maps",parqueo:"Parking",
  fotos:"Upload your photos",fotosSub:"Share your photos of the celebration with the couple",mensaje:"A few words for you",gracias:"Thank you!",graciasDef:"Thank you for celebrating with us.",
  termino:"This event has ended and the seating list is no longer available.",resena:"Leave us a Google review",resenaSub:"Did you enjoy the event? We'd love to hear from you.",
- organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen"}};
+ organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen",ubicacion:"Location"}};
 let LANG="es";
 const tr=(k,...a)=>{const v=(TXT[LANG]||TXT.es)[k];return typeof v=="function"?v(...a):(v==null?TXT.es[k]:v)};
 // Texto de la configuración en el idioma actual: usa campo_en si existe, si no el español
@@ -166,11 +166,13 @@ function llegarHTML(){const l=C.llegar||{};if(!l.direccion&&!l.mapsUrl&&!tc(l,"p
 function albumHTML(){const a=url(C.albumUrl);if(!a)return"";return `<a class="btn grande" href="${esc(a)}" target="_blank" rel="noopener">📷 ${tr("fotos")}<small>${tr("fotosSub")}</small></a>`}
 function resenaHTML(){const r=url(E().resenaUrl);if(!r)return"";return `<a class="btn grande oscuro" href="${esc(r)}" target="_blank" rel="noopener">★ ${tr("resena")}<small>${tr("resenaSub")}</small></a>`}
 function extrasHTML(){return mensajeHTML()+albumHTML()+programaHTML()+menuHTML()+llegarHTML()}
-function pieHTML(pre){const e=E(),w=String(e.whatsapp||"").replace(/\D/g,""),links=[];
+function pieHTML(pre){const e=E(),w=String(e.whatsapp||"").replace(/\D/g,""),links=[],wt=tc(e,"whatsappTexto");
+ if(w)links.push(`<a href="https://wa.me/${w}${wt?"?text="+encodeURIComponent(wt):""}" target="_blank" rel="noopener">WhatsApp</a>`);
+ if(e.instagram){const ig=/^https?:/.test(e.instagram)?e.instagram:"https://www.instagram.com/"+String(e.instagram).replace(/^@/,"")+"/";links.push(`<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>`)}
  if(url(e.web))links.push(`<a href="${esc(e.web)}" target="_blank" rel="noopener">Web</a>`);
- if(w)links.push(`<a href="https://wa.me/${w}" target="_blank" rel="noopener">WhatsApp</a>`);
- if(e.instagram){const ig=/^https?:/.test(e.instagram)?e.instagram:"https://www.instagram.com/"+String(e.instagram).replace(/^@/,"");links.push(`<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>`)}
- return `<div class="pie"><small>${tr("organizado")}</small><img src="${pre||""}logo.png" alt="Milfor Bodas &amp; Eventos">${links.length?`<div class="planea">${tr("planea")}</div><div class="links">${links.join("")}</div>`:""}</div>`}
+ const mp=url(e.mapsUrl)||(e.direccion?"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(e.direccion):"");
+ if(mp)links.push(`<a href="${esc(mp)}" target="_blank" rel="noopener">${tr("ubicacion")}</a>`);
+ return `<div class="pie"><small>${tr("organizado")}</small><img src="${pre||""}logo.png" alt="${esc(e.nombre||"Milfor Bodas & Eventos")}">${links.length?`<div class="planea">${tr("planea")}</div><div class="links">${links.join("")}</div>`:""}${e.direccion?`<div class="dir">${esc(e.direccion)}</div>`:""}</div>`}
 function graciasHTML(vista){return (vista?`<div class="msg aviso">${tr("vista")}</div>`:"")+`<div class="card"><p class="bien" style="font-size:44px;margin:0">${tr("gracias")}</p><div class="tn">${esc(tc(C,"mensajeGracias")||tr("graciasDef"))}</div>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}<div class="msg">${tr("termino")}</div></div>`+albumHTML()+resenaHTML()}
 // Fecha "AAAA-MM-DD": fechaGracias = desde ESE día se muestra "¡Gracias!"; fechaExpira = desde el día SIGUIENTE
 function fechaLocal(s,mas){const p=String(s||"").split("-").map(Number);if(p.length<3||p.some(isNaN))return null;return new Date(p[0],p[1]-1,p[2]+(mas||0))}
