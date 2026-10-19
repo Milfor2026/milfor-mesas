@@ -52,7 +52,7 @@ window.MILFOR_CONFIG = {
   llegar: {lugar:"Salón de ejemplo", lugar_en:"Sample venue", direccion:"123 Calle Ejemplo, Miami, FL (ficticia)", mapsUrl:"",
            parqueo:"Valet parking en la entrada principal (ejemplo).", parqueo_en:"Valet parking at the main entrance (sample)."},
   // Álbum de fotos compartido (ej. álbum de Google Fotos con "colaborar" activado). EJEMPLO:
-  albumUrl: "https://photos.google.com/",
+  albumUrl: "",  // vacío = sin botón de fotos; pegue aquí el enlace del álbum de este evento
   // Compañeros de mesa: muestra SOLO el primer nombre de los demás de la mesa. false = no mostrar.
   companeros: true,
   // Vista del personal (/personal/): clave codificada. Cámbiela con:  python3 preparar.py pin a 1234
