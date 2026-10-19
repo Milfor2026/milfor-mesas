@@ -10,7 +10,7 @@ const TXT={es:{label:"Escribe tu nombre o apellido para encontrar tu mesa",ph:"E
  companeros:"En tu mesa también están",programa:"Programa de la noche",menu:"Menú de la noche",llegar:"Cómo llegar",mapa:"Abrir en Google Maps",parqueo:"Estacionamiento",
  fotos:"Sube tus fotos",fotosSub:"Comparte tus fotos del evento con los novios",mensaje:"Unas palabras para ti",gracias:"¡Gracias!",graciasDef:"Gracias por acompañarnos en esta celebración.",
  termino:"Este evento ya terminó y la lista de mesas ya no está disponible.",resena:"Déjanos tu reseña en Google",resenaSub:"¿Te gustó la organización? Nos encantaría leerte.",
- organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",demoTag:"Demostración / ejemplo",demoNota:"Página de ejemplo con datos ficticios: así la verán los invitados de tu evento.",fotosDemo:"En cada evento, este botón abre el álbum de fotos propio de ese evento.",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final",ubicacion:"Ubicación"},
+ organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",demoTag:"Demostración / ejemplo",fotoDe:"Foto de",fotoNov:"Foto de los anfitriones",demoNota:"Página de ejemplo con datos ficticios: así la verán los invitados de tu evento.",fotosDemo:"En cada evento, este botón abre el álbum de fotos propio de ese evento.",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final",ubicacion:"Ubicación"},
 en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba",corto:"Please type at least 3 letters of your first or last name.",
  nada:"We couldn't find that name. Check the spelling, try just your last name, or ask the Milfor staff.",muchos:"Many guests match that name. Please add your last name.",
  varios:"Several guests match — please choose your name:",sug:"Did you mean…?",carga:"The guest list could not be loaded.",hola:"Hello",MESA:"TABLE",PUESTO:"SEAT",TUMESA:"YOUR TABLE",
@@ -20,7 +20,7 @@ en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba"
  companeros:"Also at your table",programa:"Tonight's schedule",menu:"Tonight's menu",llegar:"Getting there",mapa:"Open in Google Maps",parqueo:"Parking",
  fotos:"Upload your photos",fotosSub:"Share your photos of the celebration with the couple",mensaje:"A few words for you",gracias:"Thank you!",graciasDef:"Thank you for celebrating with us.",
  termino:"This event has ended and the seating list is no longer available.",resena:"Leave us a Google review",resenaSub:"Did you enjoy the event? We'd love to hear from you.",
- organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",demoTag:"Demo / example",demoNota:"Sample page with fictional data: this is what the guests at your event will see.",fotosDemo:"At each event, this button opens that event's own photo album.",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen",ubicacion:"Location"}};
+ organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",demoTag:"Demo / example",fotoDe:"Photo of",fotoNov:"Photo of the hosts",demoNota:"Sample page with fictional data: this is what the guests at your event will see.",fotosDemo:"At each event, this button opens that event's own photo album.",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen",ubicacion:"Location"}};
 let LANG="es";
 const tr=(k,...a)=>{const v=(TXT[LANG]||TXT.es)[k];return typeof v=="function"?v(...a):(v==null?TXT.es[k]:v)};
 // Texto de la configuración en el idioma actual: usa campo_en si existe, si no el español
@@ -153,7 +153,7 @@ function opciones(items,lista,titulo,sug){return `<div class="msg${sug?" sug":""
 const E=()=>Object.assign({},(typeof window!="undefined"&&window.MILFOR_EMPRESA)||(typeof global!="undefined"&&global.MILFOR_EMPRESA)||{},C.milfor||{});
 function iniciales(n){const p=String(n||"").split(/\s*(?:&|\by\b|\band\b)\s*/i).filter(Boolean);return p.length>1?p.slice(0,2).map(x=>x.trim()[0].toUpperCase()).join(" & "):""}
 function mensajeHTML(){const m=tc(C,"mensajeNovios");if(!m)return"";const f=url(C.fotoNovios),ini=iniciales(C.novios);
- return `<div class="card nov">${f?`<img class="foto" src="${esc(f)}" alt="">`:ini?`<div class="mono">${esc(ini)}</div>`:""}<div class="sub">${tr("mensaje")}</div><p class="carta">“${esc(m)}”</p>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}</div>`}
+ return `<div class="card nov">${f?`<img class="foto" src="${esc(f)}" alt="${esc(C.novios?tr("fotoDe")+" "+C.novios:tr("fotoNov"))}">`:ini?`<div class="mono">${esc(ini)}</div>`:""}<div class="sub">${tr("mensaje")}</div><p class="carta">“${esc(m)}”</p>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}</div>`}
 function seccion(id,tit,html){return `<details class="sec" id="sec-${id}"><summary><span>✦</span> ${tit}</summary><div class="cont">${html}</div></details>`}
 function programaHTML(){const p=(C.programa||[]).filter(x=>tc(x,"titulo"));if(!p.length)return"";
  return seccion("programa",tr("programa"),`<ul class="prog">${p.map(x=>`<li><b>${esc(tc(x,"hora"))}</b><span>${esc(tc(x,"titulo"))}</span></li>`).join("")}</ul>`)}
@@ -172,7 +172,7 @@ function pieHTML(pre){const e=E(),w=String(e.whatsapp||"").replace(/\D/g,""),lin
  if(url(e.web))links.push(`<a href="${esc(e.web)}" target="_blank" rel="noopener">Web</a>`);
  const mp=url(e.mapsUrl)||(e.direccion?"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(e.direccion):"");
  if(mp)links.push(`<a href="${esc(mp)}" target="_blank" rel="noopener">${tr("ubicacion")}</a>`);
- return `<div class="pie"><small>${tr("organizado")}</small><img src="${pre||""}logo.png" alt="${esc(e.nombre||"Milfor Bodas & Eventos")}">${links.length?`<div class="planea">${tr("planea")}</div><div class="links">${links.join("")}</div>`:""}${e.direccion?`<div class="dir">${esc(e.direccion)}</div>`:""}</div>`}
+ return `<div class="pie"><small>${tr("organizado")}</small><img src="${pre||""}logo.png" alt="${esc(e.nombre||"Milfor Bodas & Eventos")}">${links.length?`<div class="planea">${tr("planea")}</div><div class="links">${links.join(" ")}</div>`:""}${e.direccion?`<div class="dir">${esc(e.direccion)}</div>`:""}</div>`}
 function graciasHTML(vista){return (vista?`<div class="msg aviso">${tr("vista")}</div>`:"")+`<div class="card"><p class="bien" style="font-size:44px;margin:0">${tr("gracias")}</p><div class="tn">${esc(tc(C,"mensajeGracias")||tr("graciasDef"))}</div>${C.novios?`<div class="firma">${esc(C.novios)}</div>`:""}<div class="msg">${tr("termino")}</div></div>`+albumHTML()+resenaHTML()}
 // Fecha "AAAA-MM-DD": fechaGracias = desde ESE día se muestra "¡Gracias!"; fechaExpira = desde el día SIGUIENTE
 function fechaLocal(s,mas){const p=String(s||"").split("-").map(Number);if(p.length<3||p.some(isNaN))return null;return new Date(p[0],p[1]-1,p[2]+(mas||0))}
