@@ -1,5 +1,7 @@
 // ===== CONFIGURACIÓN DEL EVENTO (editar aquí) =====
 window.MILFOR_CONFIG = {
+  // Página de DEMOSTRACIÓN (datos ficticios): muestra la etiqueta "Demostración / ejemplo". En un evento real: quite esta línea.
+  demo: true,
   // Nombres de los novios (EJEMPLO: cámbielos por los reales). Deje "" si no es boda.
   novios: "Laura & Andrés",
   bienvenida: "¡Bienvenidos!",
@@ -49,8 +51,9 @@ window.MILFOR_CONFIG = {
   // Cómo llegar (EJEMPLO, dirección ficticia). mapsUrl: pegue el link de Google Maps; si está vacío se busca la dirección.
   llegar: {lugar:"Salón de ejemplo", lugar_en:"Sample venue", direccion:"123 Calle Ejemplo, Miami, FL (ficticia)", mapsUrl:"",
            parqueo:"Valet parking en la entrada principal (ejemplo).", parqueo_en:"Valet parking at the main entrance (sample)."},
-  // Álbum de fotos compartido (ej. álbum de Google Fotos con "colaborar" activado). EJEMPLO:
-  albumUrl: "https://photos.google.com/",
+  // Álbum de fotos compartido (ej. álbum de Google Fotos con "colaborar" activado). Pegue el enlace del álbum de ESTE evento.
+  // Vacío "": no aparece el botón (en la demostración se muestra una nota en su lugar).
+  albumUrl: "",
   // Compañeros de mesa: muestra SOLO el primer nombre de los demás de la mesa. false = no mostrar.
   companeros: true,
   // Vista del personal (/personal/): clave codificada. Cámbiela con:  python3 preparar.py pin raiz 1234

@@ -10,7 +10,7 @@ const TXT={es:{label:"Escribe tu nombre o apellido para encontrar tu mesa",ph:"E
  companeros:"En tu mesa también están",programa:"Programa de la noche",menu:"Menú de la noche",llegar:"Cómo llegar",mapa:"Abrir en Google Maps",parqueo:"Estacionamiento",
  fotos:"Sube tus fotos",fotosSub:"Comparte tus fotos del evento con los novios",mensaje:"Unas palabras para ti",gracias:"¡Gracias!",graciasDef:"Gracias por acompañarnos en esta celebración.",
  termino:"Este evento ya terminó y la lista de mesas ya no está disponible.",resena:"Déjanos tu reseña en Google",resenaSub:"¿Te gustó la organización? Nos encantaría leerte.",
- organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final",ubicacion:"Ubicación"},
+ organizado:"Evento organizado por",planea:"Planea tu evento con nosotros",evento:"Evento",demoTag:"Demostración / ejemplo",demoNota:"Página de ejemplo con datos ficticios: así la verán los invitados de tu evento.",fotosDemo:"En cada evento, este botón abre el álbum de fotos propio de ese evento.",otro:"English",bienvenida:"¡Bienvenidos!",tarima:"TARIMA",vista:"Vista previa de la pantalla final",ubicacion:"Ubicación"},
 en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba",corto:"Please type at least 3 letters of your first or last name.",
  nada:"We couldn't find that name. Check the spelling, try just your last name, or ask the Milfor staff.",muchos:"Many guests match that name. Please add your last name.",
  varios:"Several guests match — please choose your name:",sug:"Did you mean…?",carga:"The guest list could not be loaded.",hola:"Hello",MESA:"TABLE",PUESTO:"SEAT",TUMESA:"YOUR TABLE",
@@ -20,7 +20,7 @@ en:{label:"Type your first or last name to find your table",ph:"e.g. Ana Prueba"
  companeros:"Also at your table",programa:"Tonight's schedule",menu:"Tonight's menu",llegar:"Getting there",mapa:"Open in Google Maps",parqueo:"Parking",
  fotos:"Upload your photos",fotosSub:"Share your photos of the celebration with the couple",mensaje:"A few words for you",gracias:"Thank you!",graciasDef:"Thank you for celebrating with us.",
  termino:"This event has ended and the seating list is no longer available.",resena:"Leave us a Google review",resenaSub:"Did you enjoy the event? We'd love to hear from you.",
- organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen",ubicacion:"Location"}};
+ organizado:"Event organized by",planea:"Plan your event with us",evento:"Event",demoTag:"Demo / example",demoNota:"Sample page with fictional data: this is what the guests at your event will see.",fotosDemo:"At each event, this button opens that event's own photo album.",otro:"Español",bienvenida:"Welcome!",tarima:"STAGE",vista:"Preview of the closing screen",ubicacion:"Location"}};
 let LANG="es";
 const tr=(k,...a)=>{const v=(TXT[LANG]||TXT.es)[k];return typeof v=="function"?v(...a):(v==null?TXT.es[k]:v)};
 // Texto de la configuración en el idioma actual: usa campo_en si existe, si no el español
@@ -163,7 +163,7 @@ function mapsUrl(l){return url(l.mapsUrl)||(l.direccion?"https://www.google.com/
 function llegarHTML(){const l=C.llegar||{};if(!l.direccion&&!l.mapsUrl&&!tc(l,"parqueo"))return"";const m=mapsUrl(l);
  return seccion("llegar",tr("llegar"),(tc(l,"lugar")?`<div class="tn">${esc(tc(l,"lugar"))}</div>`:"")+(l.direccion?`<p>${esc(l.direccion)}</p>`:"")+
   (m?`<a class="btn" href="${esc(m)}" target="_blank" rel="noopener">${tr("mapa")}</a>`:"")+(tc(l,"parqueo")?`<p><b>${tr("parqueo")}:</b> ${esc(tc(l,"parqueo"))}</p>`:""))}
-function albumHTML(){const a=url(C.albumUrl);if(!a)return"";return `<a class="btn grande" href="${esc(a)}" target="_blank" rel="noopener">📷 ${tr("fotos")}<small>${tr("fotosSub")}</small></a>`}
+function albumHTML(){if(!C.albumUrl&&C.demo)return `<div class="card demo-fotos"><div class="sub">📷 ${tr("fotos")}</div><p class="aviso">${tr("fotosDemo")}</p></div>`;const a=url(C.albumUrl);if(!a)return"";return `<a class="btn grande" href="${esc(a)}" target="_blank" rel="noopener">📷 ${tr("fotos")}<small>${tr("fotosSub")}</small></a>`}
 function resenaHTML(){const r=url(E().resenaUrl);if(!r)return"";return `<a class="btn grande oscuro" href="${esc(r)}" target="_blank" rel="noopener">★ ${tr("resena")}<small>${tr("resenaSub")}</small></a>`}
 function extrasHTML(){return mensajeHTML()+albumHTML()+programaHTML()+menuHTML()+llegarHTML()}
 function pieHTML(pre){const e=E(),w=String(e.whatsapp||"").replace(/\D/g,""),links=[],wt=tc(e,"whatsappTexto");
@@ -187,7 +187,8 @@ const params=new URLSearchParams(location.search),q=$("q"),r=$("r");let L=[],act
 setLang(idiomaInicial());
 function cabecera(){document.documentElement.lang=LANG;$("b").textContent=tc(C,"bienvenida")||tr("bienvenida");
  const ti=tc(C,"titulo");$("t").textContent=C.novios?((ti?ti+" ":"")+C.novios):ti;$("d").textContent=(tc(C,"fecha"))+(tc(C,"lugar")?" · "+tc(C,"lugar"):"");
- $("lang").textContent=tr("otro");if(C.evento)$("ev").textContent=tr("evento")+" "+C.evento;$("pie").innerHTML=pieHTML(PRE)}
+ $("lang").textContent=tr("otro");if(C.evento)$("ev").textContent=tr("evento")+" "+C.evento;else if(C.demo)$("ev").textContent=tr("demoTag");
+ if(C.demo){let d=$("demo");if(!d){d=document.createElement("div");d.id="demo";d.className="demo-banda";d.setAttribute("role","note");document.querySelector("main").prepend(d)}d.innerHTML=`<b>${esc(tr("demoTag"))}</b> · ${esc(tr("demoNota"))}`}$("pie").innerHTML=pieHTML(PRE)}
 const fin=expirado(C)||params.get("gracias")=="1";
 function pintar(){cabecera();
  if(fin){$("buscar").style.display="none";$("b").style.display="none";$("extra").innerHTML=graciasHTML(!expirado(C));return}

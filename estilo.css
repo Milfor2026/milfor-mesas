@@ -42,3 +42,5 @@ ul.prog b{min-width:78px;color:#8a6a24;font-weight:600}.plato{text-align:center;
 .pie .planea{font-style:italic;font-size:15px;color:var(--n)}.pie .links{margin-top:6px}.pie .links a{color:#8a6a24;margin:0 9px;font-size:15px;text-decoration:none;border-bottom:1px solid #e5dcc6}
 .pie .dir{margin-top:10px;font-size:13px;color:#8a8f9c}
 @media print{.lang,#ev{display:none}}
+.demo-banda{margin:0 auto 16px;max-width:520px;padding:10px 14px;border:1px dashed #b8923a;border-radius:10px;background:#fff8e6;color:#6b5220;font-size:16px;text-align:center;line-height:1.4}
+.demo-fotos .aviso{margin:6px 0 0;font-style:italic}
