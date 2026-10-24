@@ -11,8 +11,8 @@ window.MILFOR_CONFIG = {
 
   fecha: "Sábado 5 de diciembre de 2026 · 7:30 p.m.",
   fecha_en: "Saturday, December 5, 2026 · 7:30 p.m.",
-  lugar: "Salón principal",
-  lugar_en: "Main ballroom",
+  lugar: "Milfor Paraíso",
+  lugar_en: "Milfor Paraíso",
   // Fecha en que la página deja de mostrar la lista y muestra un "¡Gracias!" (formato "AAAA-MM-DD").
   // Desde ese día ya no se puede buscar a nadie. Deje "" para que no caduque.
   fechaExpira: "",
@@ -48,9 +48,9 @@ window.MILFOR_CONFIG = {
     {tiempo:"Plato fuerte",  tiempo_en:"Main",    plato:"Lomo en salsa de vino (ejemplo)", plato_en:"Beef tenderloin in red wine sauce (sample)", detalle:"o pescado a la plancha", detalle_en:"or grilled fish"},
     {tiempo:"Postre",        tiempo_en:"Dessert", plato:"Torta de los novios (ejemplo)",  plato_en:"Wedding cake (sample)"}
   ],
-  // Cómo llegar (EJEMPLO, dirección ficticia). mapsUrl: pegue el link de Google Maps; si está vacío se busca la dirección.
-  llegar: {lugar:"Salón de ejemplo", lugar_en:"Sample venue", direccion:"123 Calle Ejemplo, Miami, FL (ficticia)", mapsUrl:"",
-           parqueo:"Valet parking en la entrada principal (ejemplo).", parqueo_en:"Valet parking at the main entrance (sample)."},
+  // Cómo llegar (ejemplo con la sede Milfor Paraíso). mapsUrl: pegue el link de Google Maps; si está vacío se busca la dirección.
+  llegar: {lugar:"Milfor Paraíso", lugar_en:"Milfor Paraíso", direccion:"Carrera 14 (Av. del Ferrocarril) # 17-57, Girardot", mapsUrl:"",
+           parqueo:"", parqueo_en:""},
   // Álbum de fotos compartido (ej. álbum de Google Fotos con "colaborar" activado). EJEMPLO:
   albumUrl: "",  // vacío = sin botón de fotos; pegue aquí el enlace del álbum de este evento
   // Compañeros de mesa: muestra SOLO el primer nombre de los demás de la mesa. false = no mostrar.
