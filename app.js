@@ -27,7 +27,7 @@ const tr=(k,...a)=>{const v=(TXT[LANG]||TXT.es)[k];return typeof v=="function"?v
 const tc=(o,k)=>(o&&((LANG=="en"&&o[k+"_en"])||o[k]))||"";
 function setLang(l){LANG=l=="en"?"en":"es"}
 function idiomaInicial(){try{const p=new URLSearchParams(location.search).get("lang");if(p)return p;const s=localStorage.getItem("milfor-lang");if(s)return s}catch(e){}
- const n=(typeof navigator!="undefined"&&(navigator.languages||[navigator.language]))||[];const f=n.find(x=>/^(en|es)/i.test(x||""))||"es";return /^en/i.test(f)?"en":"es"}
+ return "es"}
 const norm=s=>(s||"").replace(/['’]/g,"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9ñ ]+/g," ").replace(/\s+/g," ").trim();
 // CSV: columnas nombre,mesa[,puesto][,grupo][,nota]. Acepta coma o punto y coma. Si hay encabezado, usa los nombres de columna.
 function parseCSV(t){const rows=[];let ix={nombre:0,mesa:1,puesto:2,grupo:3,nota:4};
