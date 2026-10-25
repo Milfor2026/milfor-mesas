@@ -2,14 +2,19 @@
 <title>Milfor · Encuentra tu mesa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=9">
+<link rel="stylesheet" href="estilo.css?v=10">
 </head><body>
 <button id="lang" class="lang" type="button">English</button><div id="ev"></div>
-<header><img class="logo" src="logo.png" alt="Milfor Bodas &amp; Eventos"><p class="bien" id="b"></p><h1 id="t"></h1><div class="f" id="d"></div><div class="orn">✦ ✦ ✦</div></header>
+<a class="volver" id="volver" href="https://eventosmilfor.com/">← Milfor</a>
+<header><a href="https://eventosmilfor.com/" class="logo-link"><img class="logo" src="logo.png" alt="Milfor Bodas &amp; Eventos"></a><p class="bien" id="b"></p><h1 id="t"></h1><div class="f" id="d"></div><div class="orn">✦ ✦ ✦</div></header>
 <main><section id="buscar"><label for="q" id="lq">Escribe tu nombre o apellido para encontrar tu mesa</label>
 <input id="q" autocomplete="off" placeholder="Ej.: Ana Prueba"><div id="r"></div></section>
-<div id="extra"></div></main>
+<div id="extra"></div>
+<section class="cta-milfor"><p id="cta-t">¿Quieres esto en tu evento?</p><a class="btn oscuro" id="cta-b" href="https://eventosmilfor.com/#cotizar">Cotizar mi evento</a></section></main>
 <footer id="pie"></footer>
 <script src="milfor.js?v=9"></script>
 <script src="config.js?v=10"></script>
-<script src="app.js?v=10"></script></body></html>
+<script src="app.js?v=10"></script>
+<script>(function(){const T={es:["¿Quieres esto en tu evento?","Cotizar mi evento","← Milfor","Volver a Milfor Bodas & Eventos"],en:["Want this at your event?","Get a quote","← Milfor","Back to Milfor Bodas & Eventos"]};
+function p(){const t=T[(document.documentElement.lang||"es").slice(0,2)]||T.es;document.getElementById("cta-t").textContent=t[0];document.getElementById("cta-b").textContent=t[1];const v=document.getElementById("volver");v.textContent=t[2];v.setAttribute("aria-label",t[3])}
+p();new MutationObserver(p).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})})();</script></body></html>

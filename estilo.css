@@ -44,3 +44,9 @@ ul.prog b{min-width:78px;color:#8a6a24;font-weight:600}.plato{text-align:center;
 @media print{.lang,#ev{display:none}}
 .demo-banda{margin:0 auto 16px;max-width:520px;padding:10px 14px;border:1px dashed #b8923a;border-radius:10px;background:#fff8e6;color:#6b5220;font-size:16px;text-align:center;line-height:1.4}
 .demo-fotos .aviso{margin:6px 0 0;font-style:italic}
+
+/* Enlace de vuelta y botón Cotizar hacia eventosmilfor.com */
+.volver{position:fixed;top:8px;right:8px;z-index:9;font:600 12px/1 Georgia,serif;letter-spacing:1px;color:var(--n);background:#fff;border:1px solid var(--g);border-radius:12px;padding:6px 10px;opacity:.95;text-decoration:none}
+.logo-link{display:block}
+.cta-milfor{text-align:center;margin:26px auto 8px;padding:18px 16px;border-top:1px solid var(--g)}
+.cta-milfor p{margin:0 0 4px;font-size:19px;color:var(--n)}
